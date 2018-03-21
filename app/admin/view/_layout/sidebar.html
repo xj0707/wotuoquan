@@ -1,0 +1,70 @@
+<div class="sidebar-collapse">
+    <ul class="nav metismenu" id="side-menu">
+        <!-- 个人信息 -->
+        <li class="nav-header">
+                <div class="dropdown profile-element">
+            <a href="{:url('admin/index/index')}">
+                    <h3>窝托泉后台管理系统</h3>
+            </a>
+                </div>
+            <div class="logo-element">
+                窝托泉
+            </div>
+        </li>
+        <!-- 菜单列表 -->
+        <!-- 一级菜单 -->
+        <!--<li>-->
+            <!--<a href="{:url('admin/index/index')}"><i class="fa fa-th-large"></i> <span class="nav-label">{$Think.lang.Dashboards}</span></a>-->
+        <!--</li>-->
+        <!-- 二级菜单 -->
+        <li>
+            <a href="#"><i class="fa fa-cog"></i> <span class="nav-label">{$Think.lang.SystemManage}</span><span class="fa arrow"></span></a>
+            <ul class="nav nav-second-level collapse">
+                <li class=""><a href="{:url('admin/admin/index')}">{$Think.lang.UserManage}</a></li>
+                <!--<li><a href="{:url('admin/role/index')}">{$Think.lang.RoleManage}</a></li>-->
+                <!--<li><a href="{:url('admin/authrule/index')}">{$Think.lang.AuthManage}</a></li>-->
+            </ul>
+        </li>
+        <li>
+            <a href="#"><i class=" glyphicon glyphicon-user"></i> <span class="nav-label">用户中心</span><span class="fa arrow"></span></a>
+            <ul class="nav nav-second-level collapse">
+                <li ><a href="{:url('admin/user/index')}">用户信息</a></li>
+            </ul>
+        </li>
+        <li>
+            <a href="#"><i class=" glyphicon glyphicon-globe"></i> <span class="nav-label">产品管理</span><span class="fa arrow"></span></a>
+            <ul class="nav nav-second-level collapse">
+                <li><a href="{:url('admin/product/index')}">产品分类</a></li>
+                <li><a href="{:url('admin/product/plist')}">产品列表</a></li>
+                <li><a href="{:url('admin/product/sxproduct')}">同步思讯产品</a></li>
+            </ul>
+        </li>
+        <li>
+            <a href="#"><i class="glyphicon glyphicon-shopping-cart"></i> <span class="nav-label">订单信息</span><span class="fa arrow"></span></a>
+            <ul class="nav nav-second-level collapse">
+                <li><a href="{:url('admin/order/index')}">订单列表</a></li>
+                <!--<li><a href="{:url('admin/pay/index')}">支付信息</a></li>-->
+            </ul>
+        </li>
+        <li>
+            <a href="#"><i class=" 	glyphicon glyphicon-phone"></i> <span class="nav-label">APP界面端管理</span><span class="fa arrow"></span></a>
+            <ul class="nav nav-second-level collapse">
+                <li><a href="{:url('admin/lunbo/homeindex')}">设置首页轮播图</a></li>
+                <li><a href="{:url('admin/lunbo/hotindex')}">设置推荐轮播图</a></li>
+            </ul>
+        </li>
+        <li>
+            <a href="#"><i class=" 	glyphicon glyphicon-calendar"></i> <span class="nav-label">积分商城</span><span class="fa arrow"></span></a>
+            <ul class="nav nav-second-level collapse">
+                <li><a href="{:url('admin/integral/index')}">积分奖品</a></li>
+                <li><a href="{:url('admin/integral/socrelist')}">兑换列表</a></li>
+            </ul>
+        </li>
+        <li>
+            <a href="#"><i class="glyphicon glyphicon-floppy-open"></i> <span class="nav-label">版本信息</span><span class="fa arrow"></span></a>
+            <ul class="nav nav-second-level collapse">
+                <li><a href="{:url('admin/version/index')}">版本记录</a></li>
+            </ul>
+        </li>
+    </ul>
+</div>

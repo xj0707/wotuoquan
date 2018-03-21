@@ -1,0 +1,120 @@
+<!-- Data Tables -->
+<link rel="stylesheet" href="__ROOT__/static/admin/js/picker/jquery.datetimepicker.css">
+<script src="__ROOT__/static/admin/js/jquery.js"></script>
+<script src="__ROOT__/static/admin/js/picker/jquery.datetimepicker.js"></script>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins" style="background: white;padding: 10px">
+                <!-- 表单标题概要 -->
+                <div class="ibox-title">
+                    <h3>支付详情:
+                        总记录数：<span style="color: #0d8ddb">{$total}</span> 条； 微信支付：<span style="color: red">{$wx}</span> 条；
+                        支付宝支付：<span style="color: #00FF00">{$ali}</span> 条；
+                    </h3>
+                </div>
+                <div>
+                    <form class="navbar-form navbar-left" role="form" action="{:url('pay/payid')}" method="post" name="myfrom3">
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="payid" placeholder="支付唯一标识码查询">
+                        </div>
+                        <button type="submit" class="btn btn-default" id="but3">搜一搜</button>
+                    </form>
+                    <form class="navbar-form navbar-left" role="form" action="{:url('pay/searchname')}" method="post" name="myfrom1">
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="user_name" placeholder="用户名查询">
+                        </div>
+                        <button type="submit" class="btn btn-default" id="but1">搜一搜</button>
+                    </form>
+                    <form class="form-inline" role="form" action="{:url('liketime')}" method="post" name="myfrom2">
+                        <div class="form-group" style="margin-bottom: 10px;">
+                            <label class="sr-only" for="name">起始时间</label>
+                            <input style="height: 42px;" type="text" class="form-control" id="name" name="create_time" placeholder="起始时间">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 10px;">
+                            <label class="sr-only" for="name1">结束时间</label>
+                            <input style="height: 42px;" type="text" class="form-control" id="name1" name="e_time" placeholder="结束时间，可不填">
+                        </div>
+                        <button style="margin-bottom: 10px;" class="btn btn-default" type="button" id='but2'>搜一搜</button>
+                    </form>
+                </div>
+                <table class="table table-bordered table-hover table-responsive">
+                    <thead>
+                        <tr>
+                            <th>序号</th>
+                            <th>用户名</th>
+                            <th>用户电话号码</th>
+                            <th>订单ID</th>
+                            <th>支付唯一标识码</th>
+                            <th>支付类型</th>
+                            <th>支付时间</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {volist name="lists" id="vo"}
+                        <tr>
+                            <td>{$i}</td>
+                            <td>{$vo.user_name}</td>
+                            <td>
+                                {if condition="$vo.user_type==1"}
+                                {$vo.user_phone}
+                                {else/}
+                                    第三方登录
+                                {/if}
+                                </td>
+                            <td>{$vo.orderid}</td>
+                            <td>{$vo.payid}</td>
+                            <td>{$vo.paystate|paystate}</td>
+                            <td>{:date('Y-m-d H:i:s',$vo.update_time)}</td>
+                            <td>
+                                <!--<a href='{:url("order/userlist","id=$vo[user_id]")}' class="btn btn-info" type="button">查看订单</a>-->
+                            </td>
+                        </tr>
+                    {/volist}
+                    </tbody>
+                </table>
+
+            </div>
+            {$lists->render()}
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $("#but1").click(function(){
+        if($("input[name='un32UserID']").val()==''){
+            alert('玩家ID不能为空');
+            $("input[name='un32UserID']").focus();
+        }else{
+            document.myfrom1.submit();
+        }
+    });
+    $("#but2").click(function(){
+        if($("input[name='create_time']").val()==''){
+            alert('起始时间不能为空');
+            $("input[name='create_time']").focus();
+        }else{
+            document.myfrom2.submit();
+        }
+    });
+    $("#but3").click(function(){
+        if($("input[name='payid']").val()==''){
+            alert('标识码不能为空');
+            $("input[name='payid']").focus();
+        }else{
+            document.myfrom3.submit();
+        }
+    });
+    $('#name').datetimepicker({
+        dayOfWeekStart : 1,
+        lang:'ch',
+        startDate:	'2016/11/21 '
+    });
+    $('#name1').datetimepicker({
+        dayOfWeekStart : 1,
+        lang:'ch',
+        startDate:	'2016/11/21 '
+    });
+</script>

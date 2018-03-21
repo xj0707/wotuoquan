@@ -1,0 +1,129 @@
+<!-- Data Tables -->
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins" style="background: white;padding: 10px">
+                <!-- 表单标题概要 -->
+                <div class="ibox-title">
+                    <h3>订单详情:
+                        总订单：<span style="color: #0d8ddb">{$total}</span> 条； 新订单：<span style="color: red">{$new}</span> 条；
+                        已发货订单：<span style="color: #00FF00">{$ok}</span> 条； 已收货订单：<span style="color: #0f0f0f">{$complete}</span> 条
+                    </h3>
+                </div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <ul class="nav navbar-nav">
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle btn btn-sm" style="color: #0d8ddb; border:1px solid #0d8ddb;" type="button" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">点击分类查询 <span class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="{:url('order/index')}">全部订单</a></li>
+                                        {volist name="data" id="vo"}
+                                        <li><a href='{:url("order/index","id=$key")}'>{$vo.describe}</a></li>
+                                        {/volist}
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <div>
+                            <form class="navbar-form navbar-left" role="form" action="{:url('order/searchpname')}" method="post">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name="product_name" placeholder="产品名称查询">
+                                </div>
+                                <button type="submit" class="btn btn-default">搜一搜</button>
+                            </form>
+                            <form class="navbar-form navbar-left" role="form" action="{:url('order/searchphone')}" method="post">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name="user_phone" placeholder="用户电话号码查询">
+                                </div>
+                                <button type="submit" class="btn btn-default">搜一搜</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <table class="table table-bordered table-hover table-responsive">
+                    <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>用户电话</th>
+                        <th>货号</th>
+                        <th>产品名称</th>
+                        <th>产品规格</th>
+                        <th>产品数量</th>
+                        <th>总价格</th>
+                        <th>收货地址</th>
+                        <th>支付方式</th>
+                        <th>下单时间</th>
+                        <th>订单状态</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {volist name="orders" id="vo"}
+                    <tr>
+                        <td>{$i}</td>
+                        <td>
+                            {if condition="$vo.user_type==1"}
+                            {$vo.uup}
+                            {else/}
+                            第三方登录
+                            {/if}
+                        </td>
+                        <td>{$vo.item_no}</td>
+                        <td>{$vo.product_name}</td>
+                        <td>{$vo.product_norms}</td>
+                        <td>{$vo.buy_num}</td>
+                        <td>{$vo.product_totalprice}</td>
+                        <td>收货姓名：{$vo.user_name}电话：{$vo.aup}地址：{$vo.user_address}</td>
+                        <td>{$vo.pay_state|paystate}</td>
+                        <td>{:date('Y-m-d H:i:s',$vo.order_time)}</td>
+                        <td>{if condition="$vo.order_state==0"}<span style="color: red">新订单</span>{elseif condition="$vo.order_state==2"/}已发货{elseif condition="$vo.order_state==1"/}已收货{/if}</td>
+                        <td>
+                            {if condition="$vo.order_state==0"}
+                                <a href='{:url("handle","oid=$vo[order_id]")}'>点击发货确认</a>
+                            {/if}
+                        </td>
+                    </tr>
+                    {/volist}
+                    </tbody>
+                </table>
+                {$orders->render()}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    //弹出确认操作
+    function del(id){
+        if(confirm("您确定要删除该产品吗?")){
+           return true;
+        }
+        return false;
+    }
+    function operateFormatter(value, row, index) {
+        return [
+            '<a class="btn btn-xs edit" href="javascript:void(0)" title="{$Think.lang.Edit}">',
+            '<i class="fa fa-edit"></i>',
+            '</a>  ',
+            '<a class="btn btn-xs delete" href="javascript:void(0)" title="{$Think.lang.Delete}">',
+            '<i class="fa fa-trash"></i>',
+            '</a>'
+        ].join('');
+    }
+
+    var operateEvents = {
+        'click .edit': function (e, value, row, index) {
+            var param = {
+                url: "{:url('admin/user/edit');}",
+                data: {id: row.id}
+            }
+            $("#table").gridView('loadModal', param.url,param.data)
+        },
+        'click .delete': function (e, value, row, index) {
+            $("#table").gridView('deleteModal', 'delete', row)
+
+        }
+    };
+
+</script>

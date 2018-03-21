@@ -1,0 +1,68 @@
+
+<div class="ibox float-e-margins" style="background: white;padding: 10px">
+    <!-- 表单标题概要 -->
+    <div class="ibox-title">
+        <h5>修改奖品</h5>
+    </div>
+    <div class="btn-group">
+        <a class="btn btn-info" type="button" href="javascript:history.go(-1);">返回</a>
+    </div>
+    <form class="form-horizontal" role="form" action="{:url('integral/editform')}" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="id" value="{$id}"/>
+        <div class="form-group">
+            <label for="name1" class="col-sm-2 control-label">奖品名</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="name1" name="score_product"  value="{$info.score_product}">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="name2" class="col-sm-2 control-label">奖品描述</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="name2" name="score_describe" placeholder="可以不填" value="{$info.score_describe}" >
+            </div>
+        </div>
+        <div class="form-group">
+            <label  class="col-sm-2 control-label">产品规格</label>
+            <div class="col-sm-10" >
+                <div style=" width: 200px;">
+                    <input type="text" class="form-control" style="width: 200px" id="name4" name="score_guige" onkeyup="this.value=this.value.replace(/\D/g,'')" value="{$a1}" placeholder="请输入数字" >
+                </div>
+
+                <div style="width: 200px; float: left;" >
+                    <select style="width: 200px; float: left" class="form-control " name="score_norms">
+                        <option  value="ml" {if condition="$a2=='ml'"} selected{/if}>ml</option>
+                        <option  value="L" {if condition="$a2=='L'"} selected {/if}>L</option>
+                        <option  value="g" {if condition="$a2=='g'"} selected {/if}>g</option>
+                        <option  value="kg" {if condition="$a2=='kg'"} selected {/if}>kg</option>
+                        <option  value="个" {if condition="$a2=='个'"} selected {/if}>个</option>
+                    </select>
+                </div>
+
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="name" class="col-sm-2 control-label">奖品的数量</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="name" name="score_num" value="{$info.score_num}" onkeyup="this.value=this.value.replace(/\D/g,'')">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="firstname" class="col-sm-2 control-label">所需积分</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="firstname" name="consume_score" value="{$info.consume_score}" onkeyup="this.value=this.value.replace(/\D/g,'')">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="name7" class="col-sm-2 control-label">上传图片</label>
+            <div class="col-sm-10">
+                <input type="file" id="name7" name="file" >
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-default">提交</button>
+            </div>
+        </div>
+    </form>
+</div>
+

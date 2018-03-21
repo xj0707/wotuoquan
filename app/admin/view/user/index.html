@@ -1,0 +1,95 @@
+<!-- Data Tables -->
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins" style="background: white;padding: 10px">
+                <!-- 表单标题概要 -->
+                <div class="ibox-title">
+                    <h5>用户列表</h5>
+                </div>
+                <div>
+                    <form class="navbar-form navbar-left" role="form" action="{:url('user/searchphone')}" method="post">
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="user_phone" placeholder="电话号码查询">
+                        </div>
+                        <button type="submit" class="btn btn-default">搜一搜</button>
+                    </form>
+                    <form class="navbar-form navbar-left" role="form" action="{:url('user/searchname')}" method="post">
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="user_name" placeholder="用户名查询">
+                        </div>
+                        <button type="submit" class="btn btn-default">搜一搜</button>
+                    </form>
+                </div>
+                <table class="table table-bordered table-hover table-responsive">
+                    <thead>
+                        <tr>
+                            <th>用户名</th>
+                            <th>用户电话号码</th>
+                            <th>是否在线</th>
+                            <th>最后登录时间</th>
+                            <th>最后登录ip</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {volist name="lists" id="vo"}
+                        <tr>
+                            <td>{$vo.user_name}</td>
+                            <td>
+                                {if condition="$vo.user_type==1"}
+                                    {$vo.user_phone}
+                                {else/}
+                                     第三方登录
+                                {/if}
+                            </td>
+                            <td>{$vo.user_line|checkline}</td>
+                            <td>{:date('Y-m-d H:i:s',$vo.update_time)}</td>
+                            <td>{$vo.user_ip}</td>
+                            <td>
+                                <!--<a href='{:url("order/userlist","id=$vo[user_id]")}' class="btn btn-info" type="button">查看订单</a>-->
+                            </td>
+                        </tr>
+                    {/volist}
+                    </tbody>
+                </table>
+
+            </div>
+            {$lists->render()}
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    //弹出确认操作
+    function del(id){
+        if(confirm("您确定要删除该管理员吗?")){
+            window.location = "doDel/id/"+id;
+        }
+    }
+    function operateFormatter(value, row, index) {
+        return [
+            '<a class="btn btn-xs edit" href="javascript:void(0)" title="{$Think.lang.Edit}">',
+            '<i class="fa fa-edit"></i>',
+            '</a>  ',
+            '<a class="btn btn-xs delete" href="javascript:void(0)" title="{$Think.lang.Delete}">',
+            '<i class="fa fa-trash"></i>',
+            '</a>'
+        ].join('');
+    }
+
+    var operateEvents = {
+        'click .edit': function (e, value, row, index) {
+            var param = {
+                url: "{:url('admin/user/edit');}",
+                data: {id: row.id}
+            }
+            $("#table").gridView('loadModal', param.url,param.data)
+        },
+        'click .delete': function (e, value, row, index) {
+            $("#table").gridView('deleteModal', 'delete', row)
+            
+        }
+    };
+
+</script>

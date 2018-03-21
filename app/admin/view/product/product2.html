@@ -1,0 +1,205 @@
+<!-- Data Tables -->
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins" style="background: white;padding: 10px">
+                <!-- 表单标题概要 -->
+                <div class="ibox-title">
+                    <h5>产品列表-----{$ppinfo.describe}----{$pinfo.describe}</h5>
+                </div>
+                <div class="btn-group">
+                    <a class="btn btn-primary" type="button" href='{:url("product/addproduct","id=$id")}'>
+                        <i class="fa fa-plus" aria-hidden="true" style="margin-right: 2px"> </i>
+                        添加产品
+                    </a>
+                </div>
+                <div class="btn-group">
+                    <a class="btn btn-info" type="button" href="javascript:history.back(-2);">返回</a>
+                </div>
+                <table class="table table-bordered table-hover table-responsive">
+                    <thead>
+                    <tr>
+                        <th>产品名称</th>
+                        <th>产品数量</th>
+                        <th>产品规格</th>
+                        <th>产品价格</th>
+                        <th>产品标签</th>
+                        <th>产品描述</th>
+                        <th>卖家联系方式</th>
+                        <th>缩略图</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {volist name="lists" id="vo"}
+                    <tr>
+                        <td>{$vo.product_name}</td>
+                        <td>{$vo.product_num}</td>
+                        <td>{$vo.product_norms}</td>
+                        <td>{$vo.product_price}</td>
+                        <td>{$vo.product_label}</td>
+                        <td>{$vo.product_describe}</td>
+                        <td>{$vo.contact}</td>
+                        <td>{$vo.product_url|img}</td>
+                        <td>
+                            <a href='{:url("pedit","id=$vo[id]")}' class="btn btn-warning" type="button">修改</a>
+                            {if condition="$vo.is_suggest==0"}
+                            <a href='#addUserModal' class="btn btn-info" type="button" data-toggle="modal" onclick="getuserid({$vo['id']})">设置成推荐</a>
+                            {else/}
+                            <a href='{:url("punhot","id=$vo[id]")}' class="btn btn-success" type="button">取消推荐</a>
+                            {/if}
+                            {eq name="$Request.session.admin.userinfo.admin_level" value="1"}
+                            <a href='{:url("doDel3","id=$vo[id]")}' class="btn btn-danger" type="button" onclick="return del({$vo['id']})">删除</a>
+                            {/eq}
+                        </td>
+                    </tr>
+                    {/volist}
+                    </tbody>
+                </table>
+                {$lists->render()}
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 模态框示例（Modal） -->
+
+<div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    设置成推荐
+                </h4>
+            </div>
+            <form method="post" action="" class="form-horizontal" role="form" id="form_data" onsubmit="return check_form()">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="jinbi" class="col-sm-3 control-label">推荐理由</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="jinbi" name="coins" value=""  placeholder="请写入推荐理由">
+                        </div>
+                    </div>
+                    <input type="hidden" name="userid" id="user_id"/>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                    </button>
+                    <input type="submit" class="btn btn-primary" value="提交"/>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+<script type="text/javascript">
+    function getuserid($id){
+        $("#user_id").val($id);
+    }
+    // 提交表单
+    function check_form()
+    {
+        var jinbi = $.trim($('#jinbi').val());
+        var userid=$("#user_id").val();
+        if(!userid)
+        {
+            alert('操作异常！请重新操作');
+            return false;
+        }
+        if(!jinbi){
+            alert('你还没有输入推荐理由！');
+            return false;
+        }
+        var form_data = $('#form_data').serialize();
+        // 异步提交数据到action/add_action.php页面
+        $.post(
+                "{:url('product/phot')}",
+                {pid:userid,content:jinbi},
+                function(data){
+                    if(data > 0)
+                    {
+                        //$("#tip").html("<span style='color:blueviolet'>恭喜操作成功！</span>");
+                        // document.location.href='system_notice.php'
+                        alert("操作成功");
+                        location.reload();
+                    }
+                    else
+                    {
+                        // $("#tip").html("<span style='color:red'>失败，请重试</span>");
+                        alert('操作失败');
+                        location.reload();
+                    }
+                }
+
+        );
+//        $.ajax(
+//                {
+//                    url: "{:url('product/phot')}",
+//                    data:{"form_data":form_data},
+//                    type: "post",
+//                    success:function(data)
+//                    {
+//                        if(data > 0)
+//                        {
+//                            //$("#tip").html("<span style='color:blueviolet'>恭喜操作成功！</span>");
+//                            // document.location.href='system_notice.php'
+//                            alert("购买成功");
+//                            window.location.href='index';
+//                        }
+//                        else
+//                        {
+//                            // $("#tip").html("<span style='color:red'>失败，请重试</span>");
+//                            alert('购买失败');
+//                            location.reload();
+//                        }
+//                    },
+//                    error:function()
+//                    {
+//                        alert('请求出错');
+//                        location.reload();
+//                    },
+//                    complete:function()
+//                    {
+//                        $('#acting_tips').hide();
+//                    }
+//                });
+
+        return false;
+    }
+
+
+    //弹出确认操作
+    function del(id){
+        if(confirm("您确定要删除该产品吗?")){
+           return true;
+        }
+        return false;
+    }
+    function operateFormatter(value, row, index) {
+        return [
+            '<a class="btn btn-xs edit" href="javascript:void(0)" title="{$Think.lang.Edit}">',
+            '<i class="fa fa-edit"></i>',
+            '</a>  ',
+            '<a class="btn btn-xs delete" href="javascript:void(0)" title="{$Think.lang.Delete}">',
+            '<i class="fa fa-trash"></i>',
+            '</a>'
+        ].join('');
+    }
+
+    var operateEvents = {
+        'click .edit': function (e, value, row, index) {
+            var param = {
+                url: "{:url('admin/user/edit');}",
+                data: {id: row.id}
+            }
+            $("#table").gridView('loadModal', param.url,param.data)
+        },
+        'click .delete': function (e, value, row, index) {
+            $("#table").gridView('deleteModal', 'delete', row)
+
+        }
+    };
+
+</script>

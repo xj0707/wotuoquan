@@ -1,0 +1,30 @@
+
+<div class="ibox float-e-margins" style="background: white;padding: 10px">
+    <!-- 表单标题概要 -->
+    <div class="ibox-title">
+        <h5>产品列表---添加一级分类</h5>
+    </div>
+    <div class="btn-group">
+        <a class="btn btn-info" type="button" href="javascript:history.back(-1);">返回</a>
+    </div>
+    <form class="form-horizontal" role="form" action="{:url('product/doAdd')}" method="post">
+        <div class="form-group">
+            <label for="firstname" class="col-sm-2 control-label">产品标识</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="firstname" name="product_name" placeholder="标识号为大写的字母" onKeyUp="value=value.replace(/[^a-zA-Z]/g,'')">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="name2" class="col-sm-2 control-label">产品描述</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="name2" name="describe" placeholder="请输入十个字以内的描述" maxlength="10">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-default">提交</button>
+            </div>
+        </div>
+    </form>
+</div>
+

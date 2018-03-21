@@ -1,0 +1,86 @@
+<!-- Data Tables -->
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins" style="background: white;padding: 10px">
+                <!-- 表单标题概要 -->
+                <div class="ibox-title">
+                    <h5>{if condition="$type==1"}首页轮播图{else/}推荐轮播图{/if}</h5>
+                </div>
+                <div class="btn-group">
+                    <a class="btn btn-primary" type="button" href='{:url("lunbo/addlunbo","id=$type")}'>
+                        <i class="fa fa-plus" aria-hidden="true" style="margin-right: 2px"> </i>
+                        添加轮播图
+                    </a>
+                </div>
+                <table class="table table-bordered table-hover table-responsive">
+                    <caption>注：最多可设置五个应用！</caption>
+                    <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>简要描述</th>
+                        <th>缩略图</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {volist name="info" id="vo"}
+                    <tr>
+                        <td>{$vo.id}</td>
+                        <th>{$vo.lunbo_describe}</th>
+                        <td><img src="__ROOT__/uploads/{$vo.product_url}" alt="" width="50px" /></td>
+                        <td>
+                            <a href='{:url("ledit","id=$vo[id]")}' class="btn btn-warning" type="button">修改</a>
+                            {if condition="$vo.product_state==0"}
+                            <a href='{:url("lactive","id=$vo[id]")}' class="btn btn-info" type="button">点击应用</a>
+                            {else/}
+                            <a href='{:url("unactive","id=$vo[id]")}' class="btn btn-success" type="button">解除应用</a>
+                            {/if}
+                            {eq name="$Request.session.admin.userinfo.admin_level" value="1"}
+                            <a href='{:url("doDel","id=$vo[id]")}' class="btn btn-danger" type="button" onclick="return del({$vo['id']})">删除</a>
+                            {/eq}
+                        </td>
+                    </tr>
+                    {/volist}
+                    </tbody>
+                </table>
+                {$info->render()}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    //弹出确认操作
+    function del(id){
+        if(confirm("您确定要删除该产品吗?")){
+           return true;
+        }
+        return false;
+    }
+    function operateFormatter(value, row, index) {
+        return [
+            '<a class="btn btn-xs edit" href="javascript:void(0)" title="{$Think.lang.Edit}">',
+            '<i class="fa fa-edit"></i>',
+            '</a>  ',
+            '<a class="btn btn-xs delete" href="javascript:void(0)" title="{$Think.lang.Delete}">',
+            '<i class="fa fa-trash"></i>',
+            '</a>'
+        ].join('');
+    }
+
+    var operateEvents = {
+        'click .edit': function (e, value, row, index) {
+            var param = {
+                url: "{:url('admin/user/edit');}",
+                data: {id: row.id}
+            }
+            $("#table").gridView('loadModal', param.url,param.data)
+        },
+        'click .delete': function (e, value, row, index) {
+            $("#table").gridView('deleteModal', 'delete', row)
+
+        }
+    };
+
+</script>
